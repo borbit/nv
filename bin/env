@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var package = require('../package.json')
+  , program = require('commander')
+  , path = require('path')
+  , env = require('..')
+  , fs = require('fs');
+
+/**
+ * CLI
+ */
+program
+  .version(package.version)
+  .option('-P, --port <port>', 'port')
+  .option('-H, --host <host>', 'host')
+  .parse(process.argv);
+
+var cwd = process.cwd();
+console.log(path.join(cwd, '/config'));
+/**
+ * Config
+ */
+try {
+  var cfg = require(path.join(cwd, '/config'));
+} catch (err) {
+  console.error(' error: cannot find config file');
+  process.exit(1);
+}
+
+var port = program.port || '8080';
+var host = program.host || '0.0.0.0';
+
+env.server(port, host, cfg, function(err) {
+  if (err) {
+    console.error(' error: ' + err.message);
+    process.exit(1);
+  }
+  console.log(' server is started on %s:%s', host, port);
+});
