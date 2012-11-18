@@ -19,7 +19,7 @@ program
   .parse(process.argv);
 
 var cwd = process.cwd();
-console.log(path.join(cwd, '/config'));
+
 /**
  * Config
  */
@@ -38,5 +38,5 @@ env.server(port, host, cfg, function(err) {
     console.error(' error: ' + err.message);
     process.exit(1);
   }
-  console.log(' server is started on %s:%s', host, port);
+  console.log('Env is started on %s:%s', host, port);
 });
