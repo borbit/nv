@@ -1,6 +1,6 @@
 {
   "name": "front-env",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Environment for the front-end development. Part of the node-front project.",
   "author": "Serge Borbit <serge.borbit@gmail.com>",
   "dependencies": {
