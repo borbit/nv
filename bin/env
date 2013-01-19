@@ -16,6 +16,7 @@ program
   .version(package.version)
   .option('-P, --port <port>', 'port')
   .option('-H, --host <host>', 'host')
+  .option('-p, --production', 'production state')
   .parse(process.argv);
 
 var cwd = process.cwd();
@@ -30,13 +31,16 @@ try {
   process.exit(1);
 }
 
-var port = program.port || '8080';
-var host = program.host || '0.0.0.0';
+var options = {
+  production: program.production || false
+, host: program.host || '0.0.0.0'
+, port: program.port || '8080'
+};
 
-env.server(port, host, cfg, function(err) {
+env.server(options, cfg, function(err) {
   if (err) {
     console.error(' error: ' + err.message);
     process.exit(1);
   }
-  console.log(' env is running on %s:%s', host, port);
+  console.log(' env is running on %s:%s', options.host, options.port);
 });

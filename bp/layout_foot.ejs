@@ -1,0 +1,69 @@
+<% if (!production) { -%>
+  <!-- js for the development env -->
+  <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+  <script src="/js/libs/less.js"></script>
+  <script src="/js/libs/reload.js"></script>
+
+<% if (assets.cmn.js_base) { -%>
+<% assets.cmn.js_base.forEach(function(src) { -%>
+  <!-- js cmn base -->
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+<% if (assets.page.js_base) { -%>
+<% assets.page.js_base.forEach(function(src) { -%>
+  <!-- js page base -->
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+<% if (assets.cmn.js_ie7 || assets.page.js_ie7) { -%>
+  <!--[if IE 7]>
+<% if (assets.cmn.js_ie7) { -%>
+  <!-- js cmn ie7 -->
+<% assets.cmn.js_ie7.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+<% if (assets.page.js_ie7) { -%>
+  <!-- js page ie7 -->
+<% assets.page.js_ie7.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+  <![endif]-->
+<% } -%>
+<% if (assets.cmn.js_ie8 || assets.page.js_ie8) { -%>
+  <!--[if IE 8]>
+<% if (assets.cmn.js_ie8) { -%>
+  <!-- js cmn ie8 -->
+<% assets.cmn.js_ie8.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+<% if (assets.page.js_ie8) { -%>
+  <!-- js page ie8 -->
+<% assets.page.js_ie8.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+  <![endif]-->
+<% } -%>
+<% if (assets.cmn.js_ie9 || assets.page.js_ie9) { -%>
+  <!--[if IE 9]>
+<% if (assets.cmn.js_ie9) { -%>
+  <!-- js cmn ie9 -->
+<% assets.cmn.js_ie9.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+<% if (assets.page.js_ie9) { -%>
+  <!-- js page ie9 -->
+<% assets.page.js_ie9.forEach(function(src) { -%>
+  <script src="/<%= src %>"></script>
+<% }) -%>
+<% } -%>
+  <![endif]-->
+<% } -%>
+<% } -%>
+</body>
+</html>
