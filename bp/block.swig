@@ -1,1 +1,1 @@
-<!-- Block conente goes here -->
+<!-- Block content goes here -->
