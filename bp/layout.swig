@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ title | capitalize }}</title>
 
+  <!-- 
+  <meta name="apple-mobile-web-app-title" content="title"/>
+  <meta name="apple-itunes-app" content="app-id=[app-id]"/>
+
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png"/>
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png"/>
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png"/>
+  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x57.png"/>
+  -->
+
   {% if not production -%}
   {% if assets.cmn.css_base -%}
   {% for src in assets.cmn.css_base -%}
