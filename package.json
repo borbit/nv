@@ -9,7 +9,8 @@
     "express": "*",
     "sockjs": "*",
     "async": "*",
-    "swig": "*"
+    "swig": "*",
+    "ejs": "*"
   },
   "bin": {
     "front-env": "./bin/env"
