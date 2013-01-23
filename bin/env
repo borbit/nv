@@ -5,9 +5,12 @@
  */
 var package = require('../package.json')
   , program = require('commander')
+  , async = require('async')
   , path = require('path')
   , env = require('..')
   , fs = require('fs');
+
+var cwd = process.cwd();
 
 /**
  * CLI
@@ -16,31 +19,263 @@ program
   .version(package.version)
   .option('-P, --port <port>', 'port')
   .option('-H, --host <host>', 'host')
-  .option('-p, --production', 'production state')
-  .parse(process.argv);
+  .option('-p, --production', 'production state');
 
-var cwd = process.cwd();
+program
+  .command('env <engine>')
+  .description('make an environment for the specified template engine')
+  .action(makeEnv);
+
+program
+  .command('page <engine> <name>')
+  .description('make a page for the specified template engine')
+  .action(makePage);
+
+program
+  .command('block <engine> <name>')
+  .description('make a block for the specified template engine')
+  .action(makeBlock);
+
+program
+  .command('run [options]')
+  .description('run the environment')
+  .action(run);
 
 /**
- * Config
+ * Supported template engines
  */
-try {
-  var cfg = require(path.join(cwd, '/config'));
-} catch (err) {
-  console.error(' error: cannot find config file');
-  process.exit(1);
-}
+var supported = ['swig', 'ejs'];
 
-var options = {
-  production: program.production || false
-, host: program.host || '0.0.0.0'
-, port: program.port || '8080'
-};
+/**
+ * Boilerplates directory path
+ */
+var bpDir = path.join(__dirname, '../bp/');
 
-env.server(options, cfg, function(err) {
-  if (err) {
-    console.error(' error: ' + err.message);
+/**
+ * Shortcut for the path.join
+ */
+var join = path.join;
+
+/**
+ * Check if engine is supported
+ */
+function checkEngine(engine) {
+  if (!~supported.indexOf(engine)) {
+    console.error(' error: `%s` engine is not supported, choose one of: %s',
+      engine, supported.join(', '));
     process.exit(1);
   }
-  console.log(' env is running on %s:%s', options.host, options.port);
-});
+}
+
+/**
+ * Make an environment
+ */
+function makeEnv(engine) {
+  checkEngine(engine);
+
+  var cfg, jsRootDir, jsLibsDir;
+  var engines = {
+    /**
+     * Make a SWIG environment
+     */
+    swig: function(cb) {
+      var files = {};
+      files[bpDir + 'layout.swig'] = join(cfg.PAGES_ROOT, 'layout.swig');
+      copyFiles(files, cb);
+    },
+    /**
+     * Make an EJS environment
+     */
+    ejs: function(cb) {
+      var files = {};
+      files[bpDir + 'layout_head.ejs'] = join(cfg.PAGES_ROOT, 'layout_head.ejs');
+      files[bpDir + 'layout_foot.ejs'] = join(cfg.PAGES_ROOT, 'layout_foot.ejs');
+      copyFiles(files, cb);
+    }
+  };
+
+  async.waterfall([
+    function(cb) {
+      var files = {};
+      files[bpDir + 'config.js'] = join(cwd, 'config.js');
+      copyFiles(files, cb);
+    },
+    function(cb) {
+      cfg = getConfig();
+      
+      jsRootDir = join(cfg.STATIC_ROOT, '/js');
+      jsLibsDir = join(jsRootDir, '/libs');
+
+      makeDirs([
+        cfg.PAGES_ROOT
+      , cfg.STATIC_ROOT
+      , jsRootDir
+      , jsLibsDir
+      ], cb);
+    },
+    function(cb) {
+      var files = {};
+      files[bpDir + 'cmn.json']  = join(cfg.PAGES_ROOT, 'cmn.json');
+      files[bpDir + 'reload.js'] = join(jsLibsDir, 'reload.js');
+      files[bpDir + 'less.js']   = join(jsLibsDir, 'less.js');
+      copyFiles(files, cb);
+    },
+    function(cb) {
+      engines[engine](cb);
+    }
+  ], function(err) {
+    if (err) {
+      console.error(' error: ' + err.message);
+      process.exit(1);
+    }
+    console.log(' Done')
+  });
+}
+
+/**
+ * Make a page
+ */
+function makePage(engine, name) {
+  checkEngine(engine);
+
+  var dir = join(getConfig().PAGES_ROOT, name);
+
+  async.waterfall([
+    function(cb) {
+      makeDirs([dir], cb);
+    },
+    function(cb) {
+      var files = {};
+      files[join(bpDir, 'page.json')]     = join(dir, name + '.json');
+      files[join(bpDir, 'page.'+ engine)] = join(dir, name + '.' + engine);
+      copyFiles(files, cb);
+    }
+  ], function(err) {
+    if (err) {
+      console.error(' error: ' + err.message);
+      process.exit(1);
+    }
+    console.log(' Done')
+  });
+}
+
+/**
+ * Make a page
+ */
+function makeBlock(engine, name) {
+  checkEngine(engine);
+
+  var blocksDir = join(getConfig().STATIC_ROOT, '/blocks/');
+  var blockDir  = join(blocksDir, '/' + name);
+
+  async.waterfall([
+    function(cb) {
+      makeDirs([blocksDir, blockDir], cb);
+    },
+    function(cb) {
+      var files = {};
+      files[join(bpDir, 'block.less')]     = join(blockDir, name + '.less');
+      files[join(bpDir, 'block.'+ engine)] = join(blockDir, name + '.' + engine);
+      copyFiles(files, cb);
+    }
+  ], function(err) {
+    if (err) {
+      console.error(' error: ' + err.message);
+      process.exit(1);
+    }
+    console.log(' Done')
+  });
+}
+
+/**
+ * Run the environment
+ */
+function run() {
+  console.log('run');
+
+  var options = {
+    production: program.production || false
+  , host: program.host || '0.0.0.0'
+  , port: program.port || '8080'
+  };
+
+  env.server(options, getConfig(), function(err) {
+    if (err) {
+      console.error(' error: ' + err.message);
+      process.exit(1);
+    }
+    console.log(' env is running on %s:%s', options.host, options.port);
+  });
+}
+
+/**
+ * Copy file
+ */
+function copyFile(source, target, cb) {
+  var cbCalled = false;
+  var rd = fs.createReadStream(source);
+  var wr = fs.createWriteStream(target);
+
+  rd.on("error", done);
+  wr.on("error", done);
+  wr.on("close", function() {
+    done();
+  });
+
+  rd.pipe(wr);
+
+  function done(err) {
+    if (!cbCalled) {
+      cb(err);
+      cbCalled = true;
+    }
+  }
+}
+
+/**
+ * Copy files
+ */
+function copyFiles(sources, cb) {
+  async.forEachSeries(Object.keys(sources), function(source, cb) {
+    var target = sources[source];
+
+    fs.exists(target, function(exists) {
+      if (exists) return cb();
+      copyFile(source, target, function(err) {
+        if (err) return cb(err);
+        console.log(' ./%s', path.relative(cwd, target));
+        cb();
+      });
+    });
+  }, cb);
+}
+
+/**
+ * Make dirs
+ */
+function makeDirs(dirs, cb) {
+  async.forEachSeries(dirs, function(dir, cb) {
+    fs.exists(dir, function(exists) {
+      if (exists) return cb();
+      fs.mkdir(dir, function(err) {
+        if (err) return cb(err);
+        console.log(' ./%s', path.relative(cwd, dir));
+        cb();
+      });
+    });
+  }, cb);
+}
+
+/**
+ * Get the config
+ */
+function getConfig() {
+  try {
+    return require(path.join(cwd, '/config'));
+  } catch (err) {
+    console.error(' error: cannot find config file');
+    process.exit(1);
+  }
+}
+
+program.parse(process.argv);
