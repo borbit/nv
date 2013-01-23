@@ -1,3 +1,18 @@
+<%
+  function check(assets) {
+    return assets && assets.length;
+  }
+  function css(assets) {
+    return assets.reduce(function(m, src) {
+      return m + '  <link rel="stylesheet" href="/' + src + '"/>\n';
+    }, '')
+  }
+  function less(assets) {
+    return assets.reduce(function(m, src) {
+      return m + '    @import "/' + src + '";\n';
+    }, '')
+  }
+-%>
 <!doctype html>
 <html>
 <head>
@@ -6,108 +21,80 @@
   <title><%=: title | capitalize %></title>
 
 <% if (!production) { -%>
-<% if (assets.cmn.css_base) { -%>
+<% if (check(assets.cmn.css_base)) { -%>
   <!-- css cmn base -->
-<% assets.cmn.css_base.forEach(function(src) { -%>
-  <link rel="stylesheet" href="/<%= src %>"/>
-<% }) -%>
+<%- css(assets.cmn.css_base) -%>
 <% } -%>
-<% if (assets.page.css_base) { -%>
+<% if (check(assets.page.css_base)) { -%>
   <!-- css page base -->
-<% assets.page.css_base.forEach(function(src) { -%>
-  <link rel="stylesheet" href="/<%= src %>"/>
-<% }) -%>
+<%- css(assets.page.css_base) -%>
 <% } -%>
-<% if (assets.cmn.less_base || assets.page.less_base) { -%>
+<% if (check(assets.cmn.less_base) || check(assets.page.less_base)) { -%>
   <style type="text/less">
-<% if (assets.cmn.includes) { -%>
+<% if (check(assets.cmn.includes)) { -%>
     /* less cmn includes */
-<% assets.cmn.includes.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.includes) -%>
 <% } -%>
-<% if (assets.cmn.less_base) { -%>
+<% if (check(assets.cmn.less_base)) { -%>
    /* less cmn base */
-<% assets.cmn.less_base.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.less_base) -%>
 <% } -%>
-<% if (assets.page.less_base) { -%>
+<% if (check(assets.page.less_base)) { -%>
     /* less page base */
-<% assets.page.less_base.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.page.less_base) -%>
 <% } -%>
   </style>
 <% } -%>
-<% if (assets.cmn.less_ie7 || assets.page.less_ie7) { -%>
+<% if (check(assets.cmn.less_ie7) || check(assets.page.less_ie7)) { -%>
   <!--[if IE 7]>
   <style type="text/less">
-<% if (assets.cmn.includes) { -%>
+<% if (check(assets.cmn.includes)) { -%>
     /* less cmn includes */
-<% assets.cmn.includes.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.includes) -%>
 <% } -%>
-<% if (assets.cmn.less_ie7) { -%>
+<% if (check(assets.cmn.less_ie7)) { -%>
     /* less cmn ie7 */
-<% assets.cmn.less_ie7.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.less_ie7) -%>
 <% } -%>
-<% if (assets.page.less_ie7) { -%>
+<% if (check(assets.page.less_ie7)) { -%>
     /* less page ie7 */
-<% assets.page.less_ie7.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.page.less_ie7) -%>
 <% } -%>
   </style>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.less_ie8 || assets.page.less_ie8) { -%>
+<% if (check(assets.cmn.less_ie8) || check(assets.page.less_ie8)) { -%>
   <!--[if IE 8]>
   <style type="text/less">
-<% if (assets.cmn.includes) { -%>
+<% if (check(assets.cmn.includes)) { -%>
     /* less cmn includes */
-<% assets.cmn.includes.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.includes) -%>
 <% } -%>
-<% if (assets.cmn.less_ie8) { -%>
+<% if (check(assets.cmn.less_ie8)) { -%>
     /* less cmn ie8 */
-<% assets.cmn.less_ie8.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.less_ie8) -%>
 <% } -%>
-<% if (assets.page.less_ie8) { -%>
+<% if (check(assets.page.less_ie8)) { -%>
     /* less page ie8 */
-<% assets.page.less_ie8.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.page.less_ie8) -%>
 <% } -%>
   </style>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.less_ie9 || assets.page.less_ie9) { -%>
+<% if (check(assets.cmn.less_ie9) || check(assets.page.less_ie9)) { -%>
   <!--[if IE 9]>
   <style type="text/less">
-<% if (assets.cmn.includes) { -%>
+<% if (check(assets.cmn.includes)) { -%>
     /* less cmn includes */
-<% assets.cmn.includes.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.includes) -%>
 <% } -%>
-<% if (assets.cmn.less_ie9) { -%>
+<% if (check(assets.cmn.less_ie9)) { -%>
     /* less cmn ie9 */
-<% assets.cmn.less_ie9.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.cmn.less_ie9) -%>
 <% } -%>
-<% if (assets.page.less_ie9) { -%>
+<% if (check(assets.page.less_ie9)) { -%>
     /* less page ie9 */
-<% assets.page.less_ie9.forEach(function(src) { -%>
-    @import "/<%= src %>";
-<% }) -%>
+<%- less(assets.page.less_ie9) -%>
 <% } -%>
   </style>
   <![endif]-->
