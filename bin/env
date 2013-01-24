@@ -22,9 +22,9 @@ program
   .option('-p, --production', 'production state');
 
 program
-  .command('env <engine>')
-  .description('make an environment for the specified template engine')
-  .action(makeEnv);
+  .command('init <engine>')
+  .description('initialize an environment for the specified template engine')
+  .action(initEnv);
 
 program
   .command('page <engine> <name>')
@@ -70,7 +70,7 @@ function checkEngine(engine) {
 /**
  * Make an environment
  */
-function makeEnv(engine) {
+function initEnv(engine) {
   checkEngine(engine);
 
   var cfg, jsRootDir, jsLibsDir;
