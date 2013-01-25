@@ -7,6 +7,7 @@ var package = require('../package.json')
   , program = require('commander')
   , async = require('async')
   , path = require('path')
+  , ejs = require('ejs')
   , env = require('..')
   , fs = require('fs');
 
@@ -128,7 +129,7 @@ function initEnv(engine) {
       console.error(' error: ' + err.message);
       process.exit(1);
     }
-    console.log(' Done')
+    console.log(' done')
   });
 }
 
@@ -155,7 +156,7 @@ function makePage(engine, name) {
       console.error(' error: ' + err.message);
       process.exit(1);
     }
-    console.log(' Done')
+    console.log(' done')
   });
 }
 
@@ -167,23 +168,33 @@ function makeBlock(engine, name) {
 
   var blocksDir = join(getConfig().STATIC_ROOT, '/blocks/');
   var blockDir  = join(blocksDir, '/' + name);
+  var imgDir    = join(blockDir, '/img');
+
+  var tplBlockPath = join(bpDir, 'block.' + engine);
+  var tplLessPath  = join(bpDir, 'block.less');
 
   async.waterfall([
     function(cb) {
-      makeDirs([blocksDir, blockDir], cb);
+      makeDirs([blocksDir, blockDir, imgDir], cb);
     },
     function(cb) {
+      readFiles([tplBlockPath, tplLessPath], cb);
+    },
+    function(content, cb) {
+      var tplBlock = ejs.compile(content[tplBlockPath]);
+      var tplLess = ejs.compile(content[tplLessPath]);
+
       var files = {};
-      files[join(bpDir, 'block.less')]     = join(blockDir, name + '.less');
-      files[join(bpDir, 'block.'+ engine)] = join(blockDir, name + '.' + engine);
-      copyFiles(files, cb);
+      files[join(blockDir, name + '.less')]      = tplLess({name: name});
+      files[join(blockDir, name + '.' + engine)] = tplBlock({name: name});
+      writeFiles(files, cb);
     }
   ], function(err) {
     if (err) {
       console.error(' error: ' + err.message);
       process.exit(1);
     }
-    console.log(' Done')
+    console.log(' done')
   });
 }
 
@@ -243,7 +254,43 @@ function copyFiles(sources, cb) {
       if (exists) return cb();
       copyFile(source, target, function(err) {
         if (err) return cb(err);
-        console.log(' ./%s', path.relative(cwd, target));
+        console.log(' create %s', path.relative(cwd, target));
+        cb();
+      });
+    });
+  }, cb);
+}
+
+/**
+ * Read files
+ */
+function readFiles(sources, cb) {
+  var content = {};
+  
+  async.forEach(sources, function(source, cb) {
+    fs.readFile(source, 'utf8', function(err, cont) {
+      if (err) return cb(err);
+      content[source] = cont;
+      cb();
+    });
+  }, function(err) {
+    if (err) return cb(err);
+    cb(null, content);
+  });
+}
+
+/**
+ * Write files
+ */
+function writeFiles(sources, cb) {
+  async.forEachSeries(Object.keys(sources), function(source, cb) {
+    var content = sources[source];
+
+    fs.exists(source, function(exists) {
+      if (exists) return cb();
+      fs.writeFile(source, content, function(err) {
+        if (err) return cb();
+        console.log(' \033[90mcreate\033[39m %s', path.relative(cwd, source));
         cb();
       });
     });
@@ -259,7 +306,7 @@ function makeDirs(dirs, cb) {
       if (exists) return cb();
       fs.mkdir(dir, function(err) {
         if (err) return cb(err);
-        console.log(' ./%s', path.relative(cwd, dir));
+        console.log(' \033[90mcreate\033[39m %s', path.relative(cwd, dir));
         cb();
       });
     });

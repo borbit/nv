@@ -1,1 +1,3 @@
-<!-- Block content goes here -->
+<div class="<%=name%>">
+  
+</div>
