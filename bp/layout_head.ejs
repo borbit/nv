@@ -18,7 +18,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title><%=: title | capitalize %></title>
+  <title><%=: page | capitalize %></title>
 
   <!-- 
   <meta name="apple-mobile-web-app-title" content="title"/>
@@ -30,7 +30,46 @@
   <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x57.png"/>
   -->
 
-<% if (!production) { -%>
+<% if (production) { -%>
+  <!-- PRODUCTION STATE -->
+<% if (assets.cmn.css.base) { -%>
+  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.base%>"/>
+<% } -%>
+<% if (assets.cmn.css.ie7) { -%>
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie7%>"/>
+  <![endif]-->
+<% } -%>
+<% if (assets.cmn.css.ie8) { -%>
+  <!--[if IE 8]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie8%>"/>
+  <![endif]-->
+<% } -%>
+<% if (assets.cmn.css.ie9) { -%>
+  <!--[if IE 9]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie9%>"/>
+  <![endif]-->
+<% } -%>
+<% if (assets[page].css.base) { -%>
+  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.base%>"/>
+<% } -%>
+<% if (assets[page].css.ie7) { -%>
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie7%>"/>
+  <![endif]-->
+<% } -%>
+<% if (assets[page].css.ie8) { -%>
+  <!--[if IE 8]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie8%>"/>
+  <![endif]-->
+<% } -%>
+<% if (assets[page].css.ie9) { -%>
+  <!--[if IE 9]>
+  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie9%>"/>
+  <![endif]-->
+<% } -%>
+<% } else { -%>
+  <!-- DEVELOPMENT STATE -->
 <% if (check(assets.cmn.css_base)) { -%>
   <!-- css cmn base -->
 <%- css(assets.cmn.css_base) -%>
