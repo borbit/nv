@@ -62,7 +62,7 @@ var join = path.join;
  */
 function checkEngine(engine) {
   if (!~supported.indexOf(engine)) {
-    console.error(' error: `%s` engine is not supported, choose one of: %s',
+    console.error(' \033[90merror\033[39m: `%s` engine is not supported, choose one of: %s',
       engine, supported.join(', '));
     process.exit(1);
   }
@@ -123,10 +123,13 @@ function initEnv(engine) {
     },
     function(cb) {
       engines[engine](cb);
+    },
+    function(cb) {
+      makePage(engine, 'main');
     }
   ], function(err) {
     if (err) {
-      console.error(' error: ' + err.message);
+      console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
     console.log(' done')
@@ -153,7 +156,7 @@ function makePage(engine, name) {
     }
   ], function(err) {
     if (err) {
-      console.error(' error: ' + err.message);
+      console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
     console.log(' done')
@@ -191,7 +194,7 @@ function makeBlock(engine, name) {
     }
   ], function(err) {
     if (err) {
-      console.error(' error: ' + err.message);
+      console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
     console.log(' done')
@@ -254,7 +257,7 @@ function copyFiles(sources, cb) {
       if (exists) return cb();
       copyFile(source, target, function(err) {
         if (err) return cb(err);
-        console.log(' create %s', path.relative(cwd, target));
+        console.log(' \033[90mcreate\033[39m %s', path.relative(cwd, target));
         cb();
       });
     });
