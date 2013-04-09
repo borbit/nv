@@ -28,12 +28,12 @@ program
   .action(initEnv);
 
 program
-  .command('page <engine> <name>')
+  .command('page <name> [engine]')
   .description('make a page for the specified template engine')
   .action(makePage);
 
 program
-  .command('block <engine> <name>')
+  .command('block <name> [engine]')
   .description('make a block for the specified template engine')
   .action(makeBlock);
 
@@ -146,10 +146,12 @@ function initEnv(engine) {
 /**
  * Make a page
  */
-function makePage(engine, name) {
-  checkEngine(engine);
+function makePage(name, engine) {
+  var cfg = getConfig();
+  var dir = join(cfg.PAGES_ROOT, name);
 
-  var dir = join(getConfig().PAGES_ROOT, name);
+  engine || (engine = cfg.TEMPLATE_ENGINE);
+  checkEngine(engine);
 
   async.waterfall([
     function(cb) {
@@ -173,7 +175,9 @@ function makePage(engine, name) {
 /**
  * Make a page
  */
-function makeBlock(engine, name) {
+function makeBlock(name, engine) {
+  var cfg = getConfig();
+  engine || (engine = cfg.TEMPLATE_ENGINE);
   checkEngine(engine);
 
   var blocksDir = join(getConfig().STATIC_ROOT, '/blocks/');
