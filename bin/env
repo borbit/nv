@@ -95,15 +95,22 @@ function initEnv(engine) {
     }
   };
 
+  var tplConfigPath = join(bpDir, 'config.js');
+
   async.waterfall([
     function(cb) {
+      readFiles([tplConfigPath], cb)
+    },
+    function(content, cb) {
+      var tpl = ejs.compile(content[tplConfigPath]);
       var files = {};
-      files[bpDir + 'config.js'] = join(cwd, 'config.js');
-      copyFiles(files, cb);
+
+      files[join(cwd, 'config.js')] = tpl({engine: engine});
+      writeFiles(files, cb);
     },
     function(cb) {
       cfg = getConfig();
-      
+
       jsRootDir = join(cfg.STATIC_ROOT, '/js');
       jsLibsDir = join(jsRootDir, '/libs');
 
@@ -269,7 +276,7 @@ function copyFiles(sources, cb) {
  */
 function readFiles(sources, cb) {
   var content = {};
-  
+
   async.forEach(sources, function(source, cb) {
     fs.readFile(source, 'utf8', function(err, cont) {
       if (err) return cb(err);

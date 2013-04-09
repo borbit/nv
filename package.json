@@ -7,6 +7,7 @@
     "commander": "*",
     "consolidate": "*",
     "express": "*",
+    "gzippo": "*",
     "sockjs": "*",
     "async": "*",
     "swig": "*",

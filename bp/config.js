@@ -33,3 +33,7 @@ cfg.IMAGES_MAP_FILE = process.env.IMAGES_MAP_FILE || false;
 
 // Assets host url to be used for "background" images in the css build.
 cfg.ASSETS_HOSTS = process.env.ASSETS_HOSTS || '';
+
+// Default template engine to be used if templates
+// or urls don't have an explicite extension
+cfg.TEMPLATE_ENGINE = process.env.TEMPLATE_ENGINE || '<%=engine%>';
