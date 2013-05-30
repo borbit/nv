@@ -2,153 +2,100 @@
   function check(assets) {
     return assets && assets.length;
   }
-  function css(assets) {
+  function js(assets) {
     return assets.reduce(function(m, src) {
-      return m + '  <link rel="stylesheet" href="' + src + '"/>\n';
-    }, '')
-  }
-  function less(assets) {
-    return assets.reduce(function(m, src) {
-      return m + '    @import "' + src + '";\n';
+      return m + '  <script src="' + src + '"></script>\n';
     }, '')
   }
 -%>
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title><%=: page | capitalize %></title>
-
-  <!--
-  <link rel="icon" href="favicon.ico"/>
-  <meta name="apple-mobile-web-app-title" content="title"/>
-  <meta name="apple-itunes-app" content="app-id=[app-id]"/>
-
-  <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png"/>
-  <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png"/>
-  <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png"/>
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x57.png"/>
-  -->
-
 <% if (production) { -%>
   <!-- PRODUCTION STATE -->
-<% if (assets.cmn.css.base) { -%>
-  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.base%>"/>
+<% if (assets.cmn.js.base) { -%>
+  <script src="<%=host%>/<%=assets.cmn.js.base%>"></script>
 <% } -%>
-<% if (assets.cmn.css.ie7) { -%>
+<% if (assets.cmn.js.ie7) { -%>
   <!--[if IE 7]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie7%>"/>
+  <script src="<%=host%>/<%=assets.cmn.js.ie7%>"></script>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.css.ie8) { -%>
+<% if (assets.cmn.js.ie8) { -%>
   <!--[if IE 8]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie8%>"/>
+  <script src="<%=host%>/<%=assets.cmn.js.ie8%>"></script>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.css.ie9) { -%>
+<% if (assets.cmn.js.ie9) { -%>
   <!--[if IE 9]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie9%>"/>
+  <script src="<%=host%>/<%=assets.cmn.js.ie9%>"></script>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css.base) { -%>
-  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.base%>"/>
+<% if (assets[page].js.base) { -%>
+  <script src="<%=host%>/<%=assets[page].js.base%>"></script>
 <% } -%>
-<% if (assets[page].css.ie7) { -%>
+<% if (assets[page].js.ie7) { -%>
   <!--[if IE 7]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie7%>"/>
+  <script src="<%=host%>/<%=assets[page].js.ie7%>"></script>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css.ie8) { -%>
+<% if (assets[page].js.ie8) { -%>
   <!--[if IE 8]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie8%>"/>
+  <script src="<%=host%>/<%=assets[page].js.ie8%>"></script>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css.ie9) { -%>
+<% if (assets[page].js.ie9) { -%>
   <!--[if IE 9]>
-  <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie9%>"/>
+  <script src="<%=host%>/<%=assets[page].js.ie9%>"></script>
   <![endif]-->
 <% } -%>
 <% } else { -%>
   <!-- DEVELOPMENT STATE -->
-<% if (check(assets.cmn.css_base)) { -%>
-  <!-- css cmn base -->
-<%- css(assets.cmn.css_base) -%>
+  <!-- js for the development env -->
+  <script src="/js/libs/sock.js"></script>
+  <script src="/js/libs/less.js"></script>
+  <script src="/js/libs/reload.js"></script>
+<% if (check(assets.cmn.js_base)) { -%>
+  <!-- js cmn base -->
+<%- js(assets.cmn.js_base) -%>
 <% } -%>
-<% if (check(assets.page.css_base)) { -%>
-  <!-- css page base -->
-<%- css(assets.page.css_base) -%>
+<% if (check(assets.page.js_base)) { -%>
+  <!-- js page base -->
+<%- js(assets.page.js_base) -%>
 <% } -%>
-<% if (check(assets.cmn.less_base) || check(assets.page.less_base)) { -%>
-  <style type="text/less">
-<% if (check(assets.cmn.includes)) { -%>
-    /* less cmn includes */
-<%- less(assets.cmn.includes) -%>
-<% } -%>
-<% if (check(assets.cmn.less_base)) { -%>
-   /* less cmn base */
-<%- less(assets.cmn.less_base) -%>
-<% } -%>
-<% if (check(assets.page.less_base)) { -%>
-    /* less page base */
-<%- less(assets.page.less_base) -%>
-<% } -%>
-  </style>
-<% } -%>
-<% if (check(assets.cmn.less_ie7) || check(assets.page.less_ie7)) { -%>
+<% if (check(assets.cmn.js_ie7) || check(assets.page.js_ie7)) { -%>
   <!--[if IE 7]>
-  <style type="text/less">
-<% if (check(assets.cmn.includes)) { -%>
-    /* less cmn includes */
-<%- less(assets.cmn.includes) -%>
+<% if (check(assets.cmn.js_ie7)) { -%>
+  <!-- js cmn ie7 -->
+  <%- js(assets.cmn.js_ie7) -%>
 <% } -%>
-<% if (check(assets.cmn.less_ie7)) { -%>
-    /* less cmn ie7 */
-<%- less(assets.cmn.less_ie7) -%>
+<% if (check(assets.page.js_ie7)) { -%>
+  <!-- js page ie7 -->
+<%- js(assets.page.js_ie7) -%>
 <% } -%>
-<% if (check(assets.page.less_ie7)) { -%>
-    /* less page ie7 */
-<%- less(assets.page.less_ie7) -%>
-<% } -%>
-  </style>
   <![endif]-->
 <% } -%>
-<% if (check(assets.cmn.less_ie8) || check(assets.page.less_ie8)) { -%>
+<% if (check(assets.cmn.js_ie8) || check(assets.page.js_ie8)) { -%>
   <!--[if IE 8]>
-  <style type="text/less">
-<% if (check(assets.cmn.includes)) { -%>
-    /* less cmn includes */
-<%- less(assets.cmn.includes) -%>
+<% if (check(assets.cmn.js_ie8)) { -%>
+  <!-- js cmn ie8 -->
+<%- js(assets.cmn.js_ie8) -%>
 <% } -%>
-<% if (check(assets.cmn.less_ie8)) { -%>
-    /* less cmn ie8 */
-<%- less(assets.cmn.less_ie8) -%>
+<% if (check(assets.page.js_ie8)) { -%>
+  <!-- js page ie8 -->
+<%- js(assets.page.js_ie8) -%>
 <% } -%>
-<% if (check(assets.page.less_ie8)) { -%>
-    /* less page ie8 */
-<%- less(assets.page.less_ie8) -%>
-<% } -%>
-  </style>
   <![endif]-->
 <% } -%>
-<% if (check(assets.cmn.less_ie9) || check(assets.page.less_ie9)) { -%>
+<% if (check(assets.cmn.js_ie9) || check(assets.page.js_ie9)) { -%>
   <!--[if IE 9]>
-  <style type="text/less">
-<% if (check(assets.cmn.includes)) { -%>
-    /* less cmn includes */
-<%- less(assets.cmn.includes) -%>
+<% if (check(assets.cmn.js_ie9)) { -%>
+  <!-- js cmn ie9 -->
+<%- js(assets.cmn.js_ie9) -%>
 <% } -%>
-<% if (check(assets.cmn.less_ie9)) { -%>
-    /* less cmn ie9 */
-<%- less(assets.cmn.less_ie9) -%>
+<% if (check(assets.page.js_ie9)) { -%>
+  <!-- js page ie9 -->
+<%- js(assets.page.js_ie9) -%>
 <% } -%>
-<% if (check(assets.page.less_ie9)) { -%>
-    /* less page ie9 */
-<%- less(assets.page.less_ie9) -%>
-<% } -%>
-  </style>
   <![endif]-->
 <% } -%>
 <% } -%>
-</head>
-<body>
+</body>
+</html>

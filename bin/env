@@ -125,6 +125,7 @@ function initEnv(engine) {
       var files = {};
       files[bpDir + 'cmn.json']  = join(cfg.PAGES_ROOT, 'cmn.json');
       files[bpDir + 'reload.js'] = join(jsLibsDir, 'reload.js');
+      files[bpDir + 'sock.js']   = join(jsLibsDir, 'sock.js');
       files[bpDir + 'less.js']   = join(jsLibsDir, 'less.js');
       copyFiles(files, cb);
     },
@@ -132,7 +133,7 @@ function initEnv(engine) {
       engines[engine](cb);
     },
     function(cb) {
-      makePage(engine, 'main');
+      makePage('main', engine);
     }
   ], function(err) {
     if (err) {
