@@ -24,22 +24,27 @@ program
 
 program
   .command('init <engine>')
-  .description('initialize an environment for the specified template engine')
+  .description('initialize an environment')
   .action(initEnv);
 
 program
   .command('page <name> [engine]')
-  .description('make a page for the specified template engine')
-  .action(makePage);
+  .description('create page')
+  .action(createPage);
+
+program
+  .command('compile <name> [engine]')
+  .description('compile page')
+  .action(compilePage);
 
 program
   .command('block <name> [engine]')
-  .description('make a block for the specified template engine')
-  .action(makeBlock);
+  .description('create block')
+  .action(createBlock);
 
 program
   .command('run [options]')
-  .description('run the environment')
+  .description('run the env')
   .action(run);
 
 /**
@@ -114,7 +119,7 @@ function initEnv(engine) {
       jsRootDir = join(cfg.STATIC_ROOT, '/js');
       jsLibsDir = join(jsRootDir, '/libs');
 
-      makeDirs([
+      createDirs([
         cfg.PAGES_ROOT
       , cfg.STATIC_ROOT
       , jsRootDir
@@ -133,7 +138,7 @@ function initEnv(engine) {
       engines[engine](cb);
     },
     function(cb) {
-      makePage('main', engine);
+      createPage('main', engine);
     }
   ], function(err) {
     if (err) {
@@ -147,7 +152,7 @@ function initEnv(engine) {
 /**
  * Make a page
  */
-function makePage(name, engine) {
+function createPage(name, engine) {
   var cfg = getConfig();
   var dir = join(cfg.PAGES_ROOT, name);
 
@@ -156,7 +161,7 @@ function makePage(name, engine) {
 
   async.waterfall([
     function(cb) {
-      makeDirs([dir], cb);
+      createDirs([dir], cb);
     },
     function(cb) {
       var files = {};
@@ -176,7 +181,7 @@ function makePage(name, engine) {
 /**
  * Make a page
  */
-function makeBlock(name, engine) {
+function createBlock(name, engine) {
   var cfg = getConfig();
   engine || (engine = cfg.TEMPLATE_ENGINE);
   checkEngine(engine);
@@ -190,7 +195,7 @@ function makeBlock(name, engine) {
 
   async.waterfall([
     function(cb) {
-      makeDirs([blocksDir, blockDir, imgDir], cb);
+      createDirs([blocksDir, blockDir, imgDir], cb);
     },
     function(cb) {
       readFiles([tplBlockPath, tplLessPath], cb);
@@ -232,6 +237,19 @@ function run() {
     }
     console.log(' env is running on %s:%s', options.host, options.port);
   });
+}
+
+/**
+ * Compile page
+ */
+function compilePage(name, engine) {
+  var cfg = getConfig();
+  var dir = join(cfg.PAGES_ROOT, name);
+
+  engine || (engine = cfg.TEMPLATE_ENGINE);
+  checkEngine(engine);
+
+
 }
 
 /**
@@ -315,7 +333,7 @@ function writeFiles(sources, cb) {
 /**
  * Make dirs
  */
-function makeDirs(dirs, cb) {
+function createDirs(dirs, cb) {
   async.forEachSeries(dirs, function(dir, cb) {
     fs.exists(dir, function(exists) {
       if (exists) return cb();
