@@ -249,7 +249,24 @@ function compilePage(name, engine) {
   engine || (engine = cfg.TEMPLATE_ENGINE);
   checkEngine(engine);
 
+  var Renderer = require('../lib/renderer');
+  var renderer = new Renderer({
+    pagesRoot: cfg.PAGES_ROOT
+  , distsRoot: cfg.DISTS_ROOT
+  , assetsMapFile: cfg.ASSETS_MAP_FILE
+  , imagesMapFile: cfg.IMAGES_MAP_FILE
+  , versionFile: cfg.VERSION_FILE
+  , production: !!program.production
+  });
 
+  renderer.render(name, null, engine, function(err, html) {
+    console.log(cwd, name + '.html');
+    if (err) throw err;
+    fs.writeFile(path.join(cwd, name + '.html'), html, function(err) {
+      if (err) throw err;
+      console.log(' done');
+    });
+  });
 }
 
 /**
