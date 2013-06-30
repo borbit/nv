@@ -8,9 +8,10 @@ var package = require('../package.json')
   , async = require('async')
   , path = require('path')
   , ejs = require('ejs')
-  , env = require('..')
   , fs = require('fs');
-
+  
+var nv = require('..');
+var utils = require('../lib/utils');
 var cwd = process.cwd();
 
 /**
@@ -50,7 +51,7 @@ program
 /**
  * Supported template engines
  */
-var supported = ['swig', 'ejs'];
+var supported = ['ejs'];
 
 /**
  * Boilerplates directory path
@@ -81,14 +82,6 @@ function initEnv(engine) {
 
   var cfg, jsRootDir, jsLibsDir;
   var engines = {
-    /**
-     * Make a SWIG environment
-     */
-    swig: function(cb) {
-      var files = {};
-      files[bpDir + 'layout.swig'] = join(cfg.PAGES_ROOT, 'layout.swig');
-      copyFiles(files, cb);
-    },
     /**
      * Make an EJS environment
      */
@@ -225,12 +218,12 @@ function run() {
   console.log('run');
 
   var options = {
-    production: program.production || false
+    production: !!program.production
   , host: program.host || '0.0.0.0'
   , port: program.port || '8080'
   };
 
-  env.server(options, getConfig(), function(err) {
+  nv.server(options, function(err) {
     if (err) {
       console.error(' error: ' + err.message);
       process.exit(1);
@@ -249,17 +242,7 @@ function compilePage(name, engine) {
   engine || (engine = cfg.TEMPLATE_ENGINE);
   checkEngine(engine);
 
-  var Renderer = require('../lib/renderer');
-  var renderer = new Renderer({
-    pagesRoot: cfg.PAGES_ROOT
-  , distsRoot: cfg.DISTS_ROOT
-  , assetsMapFile: cfg.ASSETS_MAP_FILE
-  , imagesMapFile: cfg.IMAGES_MAP_FILE
-  , versionFile: cfg.VERSION_FILE
-  , production: !!program.production
-  });
-
-  renderer.render(name, null, engine, function(err, html) {
+  nv.render(name, null, !!program.production, function(err, html) {
     console.log(cwd, name + '.html');
     if (err) throw err;
     fs.writeFile(path.join(cwd, name + '.html'), html, function(err) {
@@ -367,12 +350,12 @@ function createDirs(dirs, cb) {
  * Get the config
  */
 function getConfig() {
-  try {
-    return require(path.join(cwd, '/config'));
-  } catch (err) {
+  var cfg;
+  if (!(cfg = utils.loadConfig())) {
     console.error(' error: cannot find config file');
     process.exit(1);
   }
+  return cfg;
 }
 
 program.parse(process.argv);

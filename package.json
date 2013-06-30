@@ -1,7 +1,7 @@
 {
-  "name": "front-env",
-  "version": "0.0.10",
-  "description": "Environment for the front-end development. Part of the node-front project.",
+  "name": "nv",
+  "version": "0.0.1",
+  "description": "Front-end development environment",
   "author": "Serge Borbit <serge.borbit@gmail.com>",
   "dependencies": {
     "commander": "*",
@@ -10,10 +10,9 @@
     "express": "*",
     "sockjs": "*",
     "async": "*",
-    "swig": "*",
     "ejs": "*"
   },
   "bin": {
-    "front-env": "./bin/env"
+    "nv": "./bin/nv"
   }
 }
