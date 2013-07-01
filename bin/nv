@@ -121,31 +121,31 @@ function initEnv(engine) {
     },
     function(cb) {
       var files = {};
-      files[bpDir + 'cmn.json']  = join(cfg.PAGES_ROOT, 'cmn.json');
-      files[bpDir + 'reload.js'] = join(jsLibsDir, 'reload.js');
-      files[bpDir + 'sock.js']   = join(jsLibsDir, 'sock.js');
-      files[bpDir + 'less.js']   = join(jsLibsDir, 'less.js');
+      files[bpDir + 'cmn.json']     = join(cfg.PAGES_ROOT, 'cmn.json');
+      files[bpDir + 'package.json'] = join(cwd, 'package.json');
+      files[bpDir + 'reload.js']    = join(jsLibsDir, 'reload.js');
+      files[bpDir + 'sock.js']      = join(jsLibsDir, 'sock.js');
+      files[bpDir + 'less.js']      = join(jsLibsDir, 'less.js');
       copyFiles(files, cb);
     },
     function(cb) {
       engines[engine](cb);
     },
     function(cb) {
-      createPage('main', engine);
+      createPage('index', engine, cb);
     }
   ], function(err) {
     if (err) {
       console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
-    console.log(' done')
   });
 }
 
 /**
  * Make a page
  */
-function createPage(name, engine) {
+function createPage(name, engine, cb) {
   var cfg = getConfig();
   var dir = join(cfg.PAGES_ROOT, name);
 
@@ -167,7 +167,7 @@ function createPage(name, engine) {
       console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
-    console.log(' done')
+    cb && cb();
   });
 }
 
@@ -207,7 +207,6 @@ function createBlock(name, engine) {
       console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
-    console.log(' done')
   });
 }
 
@@ -247,7 +246,6 @@ function compilePage(name, engine) {
     if (err) throw err;
     fs.writeFile(path.join(cwd, name + '.html'), html, function(err) {
       if (err) throw err;
-      console.log(' done');
     });
   });
 }
