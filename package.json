@@ -8,6 +8,7 @@
     "consolidate": "*",
     "connect-gzip": "*",
     "express": "*",
+    "moment": "*",
     "sockjs": "*",
     "async": "*",
     "ejs": "*"
