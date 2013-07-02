@@ -1,39 +1,20 @@
-/**
- * Module dependencies.
- */
 var path = require('path');
+var c = module.exports;
 
-/**
- * Config
- */
-var cfg = module.exports;
+// nv
+c.PAGES_ROOT      = process.env.PAGES_ROOT      || path.join(__dirname, 'pages');
+c.STATIC_ROOT     = process.env.STATIC_ROOT     || __dirname;
+c.TEMPLATE_ENGINE = process.env.TEMPLATE_ENGINE || '<%=engine%>';
 
-// Path to the root directory for the "static" staff (blocks, css, js).
-cfg.STATIC_ROOT = process.env.STATIC_ROOT || __dirname;
+// nv-pack & production
+c.TEMPS_ROOT      = process.env.TEMPS_ROOT      || '/tmp';
+c.DISTS_ROOT      = process.env.DISTS_ROOT      || path.join(__dirname, 'dists');
+c.VERSION_FILE    = process.env.VERSION_FILE    || path.join(c.DISTS_ROOT, 'version.json');
+c.ASSETS_MAP_FILE = process.env.ASSETS_MAP_FILE || false;
+c.IMAGES_MAP_FILE = process.env.IMAGES_MAP_FILE || false;
+c.ASSETS_HOSTS    = process.env.ASSETS_HOSTS    || '';
 
-// Path to the root directory for the "pages" staff (assets lists, layouts).
-cfg.PAGES_ROOT = process.env.PAGES_ROOT || path.join(__dirname, 'pages');
-
-// Path to the root directory for distribution builds.
-cfg.DISTS_ROOT = process.env.DISTS_ROOT || path.join(__dirname, 'dists');
-
-// Path to the root directory for temporary directories used for distribution builds.
-cfg.TEMPS_ROOT = process.env.TEMPS_ROOT || '/tmp';
-
-// Path to the file contains version of the latest static distribution.
-cfg.VERSION_FILE = process.env.VERSION_FILE || path.join(cfg.DISTS_ROOT, 'version.json');
-
-// Path to the file contains the assets map of the latest static distribution.
-// If it is not specified than assets.json will be placed tot the dist directory.
-cfg.ASSETS_MAP_FILE = process.env.ASSETS_MAP_FILE || false;
-
-// Path to the file contains the images map of the latest static distribution.
-// If it is not specified than images.json will be placed tot the dist directory.
-cfg.IMAGES_MAP_FILE = process.env.IMAGES_MAP_FILE || false;
-
-// Assets host url to be used for "background" images in the css build.
-cfg.ASSETS_HOSTS = process.env.ASSETS_HOSTS || '';
-
-// Default template engine to be used if templates
-// or urls don't have an explicite extension
-cfg.TEMPLATE_ENGINE = process.env.TEMPLATE_ENGINE || '<%=engine%>';
+// locales
+c.LOCALE_DEFAULT  = process.env.LOCALE_DEFAULT || 'en';
+c.LOCALES_ROOT    = process.env.LOCALES_ROOT   || path.join(__dirname, 'i18n');
+c.LOCALES         = ['en']

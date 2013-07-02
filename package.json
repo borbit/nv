@@ -11,6 +11,7 @@
     "moment": "*",
     "sockjs": "*",
     "async": "*",
+    "i18n": "*",
     "ejs": "*"
   },
   "bin": {
