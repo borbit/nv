@@ -5,10 +5,5 @@
   "author": "",
   "dependencies": {
     "nv": "*"
-  },
-  "scripts": {
-    "drun": "./node_modules/nv/bin/nv run",
-    "prun": "./node_modules/nv/bin/nv run -p",
-    "pack": "./node_modules/nv/bin/nv pack"
   }
 }
