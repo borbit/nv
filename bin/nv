@@ -349,7 +349,7 @@ function createDirs(dirs, cb) {
  */
 function getConfig() {
   try {
-    return require(path.join(cwd, 'nv'));
+    return require(path.join(cwd, 'config'));
   } catch (err) {
     console.error(' error: cannot find config file');
     process.exit(1);
