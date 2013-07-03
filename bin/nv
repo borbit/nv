@@ -9,10 +9,10 @@ var package = require('../package.json')
   , path = require('path')
   , ejs = require('ejs')
   , fs = require('fs');
-  
-var nv = require('..');
-var utils = require('../lib/utils');
+
 var cwd = process.cwd();
+var nv = require('..');
+nv.init(getConfig());
 
 /**
  * CLI
@@ -348,12 +348,12 @@ function createDirs(dirs, cb) {
  * Get the config
  */
 function getConfig() {
-  var cfg;
-  if (!(cfg = utils.loadConfig())) {
+  try {
+    return require(path.join(cwd, 'nv'));
+  } catch (err) {
     console.error(' error: cannot find config file');
     process.exit(1);
   }
-  return cfg;
 }
 
 program.parse(process.argv);
