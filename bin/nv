@@ -12,7 +12,18 @@ var package = require('../package.json')
 
 var cwd = process.cwd();
 var nv = require('..');
-nv.init(getConfig());
+
+/**
+ * Configure
+ */
+try {
+  nv.init(require(path.join(cwd, 'config')));
+} catch (err) {
+  console.error(' error: cannot find config file');
+}
+
+// shortcut
+var c = nv.config;
 
 /**
  * CLI
@@ -80,15 +91,15 @@ function checkEngine(engine) {
 function initEnv(engine) {
   checkEngine(engine);
 
-  var cfg, jsRootDir, jsLibsDir;
+  var jsRootDir, jsLibsDir;
   var engines = {
     /**
      * Make an EJS environment
      */
     ejs: function(cb) {
       var files = {};
-      files[bpDir + 'layout_head.ejs'] = join(cfg.PAGES_ROOT, 'layout_head.ejs');
-      files[bpDir + 'layout_foot.ejs'] = join(cfg.PAGES_ROOT, 'layout_foot.ejs');
+      files[bpDir + 'layout_head.ejs'] = join(c.PAGES_ROOT, 'layout_head.ejs');
+      files[bpDir + 'layout_foot.ejs'] = join(c.PAGES_ROOT, 'layout_foot.ejs');
       copyFiles(files, cb);
     }
   };
@@ -107,21 +118,19 @@ function initEnv(engine) {
       writeFiles(files, cb);
     },
     function(cb) {
-      cfg = getConfig();
-
-      jsRootDir = join(cfg.STATIC_ROOT, '/js');
+      jsRootDir = join(c.STATIC_ROOT, '/js');
       jsLibsDir = join(jsRootDir, '/libs');
 
       createDirs([
-        cfg.PAGES_ROOT
-      , cfg.STATIC_ROOT
+        c.PAGES_ROOT
+      , c.STATIC_ROOT
       , jsRootDir
       , jsLibsDir
       ], cb);
     },
     function(cb) {
       var files = {};
-      files[bpDir + 'cmn.json']     = join(cfg.PAGES_ROOT, 'cmn.json');
+      files[bpDir + 'cmn.json']     = join(c.PAGES_ROOT, 'cmn.json');
       files[bpDir + 'package.json'] = join(cwd, 'package.json');
       files[bpDir + 'reload.js']    = join(jsLibsDir, 'reload.js');
       files[bpDir + 'sock.js']      = join(jsLibsDir, 'sock.js');
@@ -146,10 +155,9 @@ function initEnv(engine) {
  * Make a page
  */
 function createPage(name, engine, cb) {
-  var cfg = getConfig();
-  var dir = join(cfg.PAGES_ROOT, name);
+  var dir = join(c.PAGES_ROOT, name);
 
-  engine || (engine = cfg.TEMPLATE_ENGINE);
+  engine || (engine = c.TEMPLATE_ENGINE);
   checkEngine(engine);
 
   async.waterfall([
@@ -175,11 +183,10 @@ function createPage(name, engine, cb) {
  * Make a page
  */
 function createBlock(name, engine) {
-  var cfg = getConfig();
-  engine || (engine = cfg.TEMPLATE_ENGINE);
+  engine || (engine = c.TEMPLATE_ENGINE);
   checkEngine(engine);
 
-  var blocksDir = join(getConfig().STATIC_ROOT, '/blocks/');
+  var blocksDir = join(c.STATIC_ROOT, '/blocks/');
   var blockDir  = join(blocksDir, '/' + name);
   var imgDir    = join(blockDir, '/img');
 
@@ -235,10 +242,9 @@ function run() {
  * Compile page
  */
 function compilePage(name, engine) {
-  var cfg = getConfig();
-  var dir = join(cfg.PAGES_ROOT, name);
+  var dir = join(c.PAGES_ROOT, name);
 
-  engine || (engine = cfg.TEMPLATE_ENGINE);
+  engine || (engine = c.TEMPLATE_ENGINE);
   checkEngine(engine);
 
   nv.render(name, null, !!program.production, function(err, html) {
@@ -342,18 +348,6 @@ function createDirs(dirs, cb) {
       });
     });
   }, cb);
-}
-
-/**
- * Get the config
- */
-function getConfig() {
-  try {
-    return require(path.join(cwd, 'config'));
-  } catch (err) {
-    console.error(' error: cannot find config file');
-    process.exit(1);
-  }
 }
 
 program.parse(process.argv);

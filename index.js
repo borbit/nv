@@ -15,7 +15,7 @@ function init(config) {
    */
   if (c.LOCALES) {
     var i18n = require('i18n');
-    
+
     i18n.configure({
       locales       : c.LOCALES_LIST
     , defaultLocale : c.LOCALE_DEFAULT
@@ -29,5 +29,6 @@ module.exports = {
   server : require('./lib/server')
 , render : require('./lib/render')
 , watch  : require('./lib/watch')
+, config : nv.config
 , init   : init
 };
