@@ -13,15 +13,6 @@ var package = require('../package.json')
 var cwd = process.cwd();
 var nv = require('..');
 
-/**
- * Configure
- */
-try {
-  nv.init(require(path.join(cwd, 'config')));
-} catch (err) {
-  console.error(' error: cannot find config file');
-}
-
 // shortcut
 var c = nv.config;
 
@@ -37,7 +28,7 @@ program
 program
   .command('init <engine>')
   .description('initialize an environment')
-  .action(initEnv);
+  .action(init);
 
 program
   .command('page <name> [engine]')
@@ -88,7 +79,7 @@ function checkEngine(engine) {
 /**
  * Make an environment
  */
-function initEnv(engine) {
+function init(engine) {
   checkEngine(engine);
 
   var jsRootDir, jsLibsDir;
@@ -155,8 +146,9 @@ function initEnv(engine) {
  * Make a page
  */
 function createPage(name, engine, cb) {
-  var dir = join(c.PAGES_ROOT, name);
+  loadConfig();
 
+  var dir = join(c.PAGES_ROOT, name);
   engine || (engine = c.TEMPLATE_ENGINE);
   checkEngine(engine);
 
@@ -183,6 +175,8 @@ function createPage(name, engine, cb) {
  * Make a page
  */
 function createBlock(name, engine) {
+  loadConfig();
+
   engine || (engine = c.TEMPLATE_ENGINE);
   checkEngine(engine);
 
@@ -221,7 +215,7 @@ function createBlock(name, engine) {
  * Run the environment
  */
 function run() {
-  console.log('run');
+  loadConfig()
 
   var options = {
     production: !!program.production
@@ -242,6 +236,8 @@ function run() {
  * Compile page
  */
 function compilePage(name, engine) {
+  loadConfig();
+
   var dir = join(c.PAGES_ROOT, name);
 
   engine || (engine = c.TEMPLATE_ENGINE);
@@ -348,6 +344,17 @@ function createDirs(dirs, cb) {
       });
     });
   }, cb);
+}
+
+/**
+ * Configure
+ */
+function loadConfig() {
+  try {
+    nv.init(require(path.join(cwd, 'config')));
+  } catch (err) {
+    console.error(' error: cannot find config file');
+  }
 }
 
 program.parse(process.argv);
