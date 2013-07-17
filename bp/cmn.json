@@ -1,6 +1,8 @@
 {
   "css_base": [],
-  "includes": [],
+  "includes": [
+    "/less/mix.less"
+  ],
   "less_base": [],
   "less_ie7": [],
   "less_ie8": [],

@@ -11,7 +11,7 @@
     "moment": "*",
     "sockjs": "*",
     "async": "*",
-    "i18n": "*",
+    "i18n": "https://github.com/rebbix/i18n-node/archive/master.tar.gz",
     "ejs": "*"
   },
   "bin": {

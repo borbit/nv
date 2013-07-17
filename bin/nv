@@ -109,20 +109,23 @@ function init(engine) {
       writeFiles(files, cb);
     },
     function(cb) {
+      lessRootDir = join(c.STATIC_ROOT, '/less');
       jsRootDir = join(c.STATIC_ROOT, '/js');
       jsLibsDir = join(jsRootDir, '/libs');
 
       createDirs([
         c.PAGES_ROOT
       , c.STATIC_ROOT
+      , lessRootDir
       , jsRootDir
       , jsLibsDir
       ], cb);
     },
     function(cb) {
       var files = {};
-      files[bpDir + 'cmn.json']     = join(c.PAGES_ROOT, 'cmn.json');
       files[bpDir + 'package.json'] = join(cwd, 'package.json');
+      files[bpDir + 'cmn.json']     = join(c.PAGES_ROOT, 'cmn.json');
+      files[bpDir + 'mix.less']     = join(lessRootDir, 'mix.less');
       files[bpDir + 'reload.js']    = join(jsLibsDir, 'reload.js');
       files[bpDir + 'sock.js']      = join(jsLibsDir, 'sock.js');
       files[bpDir + 'less.js']      = join(jsLibsDir, 'less.js');
