@@ -5,6 +5,7 @@ var c = module.exports;
 c.PAGES_ROOT      = process.env.PAGES_ROOT      || path.join(__dirname, 'pages');
 c.STATIC_ROOT     = process.env.STATIC_ROOT     || __dirname;
 c.TEMPLATE_ENGINE = process.env.TEMPLATE_ENGINE || '<%=engine%>';
+c.ENV             = process.env.NODE_ENV        || 'development';
 
 // nv-pack & production
 c.TEMPS_ROOT      = process.env.TEMPS_ROOT      || '/tmp';
