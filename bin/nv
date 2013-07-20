@@ -23,7 +23,8 @@ program
   .version(package.version)
   .option('-P, --port <port>', 'port')
   .option('-H, --host <host>', 'host')
-  .option('-p, --production', 'production state');
+  .option('-p, --production', 'production state')
+  .option('-l, --locale <locale>', 'locale');
 
 program
   .command('init <engine>')
@@ -248,6 +249,7 @@ function compilePage(name, engine) {
   var data = {
     page: name
   , prod: !!program.production
+  , lang: program.locale
   };
 
   nv.render(data, function(err, html) {
