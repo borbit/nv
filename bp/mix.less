@@ -11,20 +11,44 @@
   }
 }
 
-.gradient-v(@s, @f) {
-  background-image: -webkit-linear-gradient(bottom, @f 0%, @s 100%);
-  background-image:    -moz-linear-gradient(bottom, @f 0%, @s 100%);
-  background-image:     -ms-linear-gradient(bottom, @f 0%, @s 100%);
-  background-image:      -o-linear-gradient(bottom, @f 0%, @s 100%);
-  background-image:         linear-gradient(bottom, @f 0%, @s 100%);
+.gradient-v(@start, @stop) {
+  .gradient-v(@start, @stop, 100%);
 }
 
-.gradient-h(@s, @f) {
-  background-image: -webkit-linear-gradient(right, @f 0%, @s 100%);
-  background-image:    -moz-linear-gradient(right, @f 0%, @s 100%);
-  background-image:     -ms-linear-gradient(right, @f 0%, @s 100%);
-  background-image:      -o-linear-gradient(right, @f 0%, @s 100%);
-  background-image:         linear-gradient(right, @f 0%, @s 100%);
+.gradient-v(@start, @stop, @length) {
+  background-image: -webkit-linear-gradient(top, @start 0%, @stop @length);
+  background-image:    -moz-linear-gradient(top, @start 0%, @stop @length);
+  background-image:     -ms-linear-gradient(top, @start 0%, @stop @length);
+  background-image:      -o-linear-gradient(top, @start 0%, @stop @length);
+  background-image:         linear-gradient(top, @start 0%, @stop @length);
+}
+
+.gradient-h(@start, @stop) {
+  .gradient-h(@start, @stop, 100%);
+}
+
+.gradient-h(@start, @stop, @length) {
+  background-image: -webkit-linear-gradient(left, @start 0%, @stop @length);
+  background-image:    -moz-linear-gradient(left, @start 0%, @stop @length);
+  background-image:     -ms-linear-gradient(left, @start 0%, @stop @length);
+  background-image:      -o-linear-gradient(left, @start 0%, @stop @length);
+  background-image:         linear-gradient(left, @start 0%, @stop @length);
+}
+
+.transition(@rules) {
+  -webkit-transition: @rules;
+     -moz-transition: @rules;
+      -ms-transition: @rules;
+       -o-transition: @rules;
+          transition: @rules;
+}
+
+.transform(@rules) {
+  -webkit-transform: @rules;
+     -moz-transform: @rules;
+      -ms-transform: @rules;
+       -o-transform: @rules;
+          transform: @rules;
 }
 
 .box-sizing(@val) {
