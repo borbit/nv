@@ -1,16 +1,36 @@
 <%
+  /*
+   * Check if assets array is not empty.
+   */
   function check(assets) {
     return assets && assets.length;
   }
+
+  /*
+   * Build html links for the css inclusion.
+   */
   function css(assets) {
     return assets.reduce(function(m, src) {
       return m + '  <link rel="stylesheet" href="' + src + '"/>\n';
     }, '')
   }
+
+  /*
+   * Build lesscss code for the less files inclusion.
+   * Only for the development envaironment.
+   */
   function less(assets) {
     return assets.reduce(function(m, src) {
       return m + '    @import "' + src + '";\n';
     }, '')
+  }
+
+  /*
+   * Returns corresponding image src from the images map.
+   * Only for the production envaironment.
+   */
+  function img(src) {
+    return images && images[src] || src;
   }
 -%>
 <!doctype html>
@@ -59,41 +79,45 @@
 
 <% if (production) { -%>
   <!-- PRODUCTION STATE -->
-<% if (assets.cmn.css && assets.cmn.css.base) { -%>
+<% if (assets.cmn.css) { %>
+<% if (assets.cmn.css.base) { -%>
   <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.base%>"/>
 <% } -%>
-<% if (assets.cmn.css && assets.cmn.css.ie7) { -%>
+<% if (assets.cmn.css.ie7) { -%>
   <!--[if IE 7]>
   <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie7%>"/>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.css && assets.cmn.css.ie8) { -%>
+<% if (assets.cmn.css.ie8) { -%>
   <!--[if IE 8]>
   <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie8%>"/>
   <![endif]-->
 <% } -%>
-<% if (assets.cmn.css && assets.cmn.css.ie9) { -%>
+<% if (assets.cmn.css.ie9) { -%>
   <!--[if IE 9]>
   <link rel="stylesheet" href="<%=host%>/<%=assets.cmn.css.ie9%>"/>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css && assets[page].css.base) { -%>
+<% } -%>
+<% if (assets[page].css) { -%>
+<% if (assets[page].css.base) { -%>
   <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.base%>"/>
 <% } -%>
-<% if (assets[page].css && assets[page].css.ie7) { -%>
+<% if (assets[page].css.ie7) { -%>
   <!--[if IE 7]>
   <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie7%>"/>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css && assets[page].css.ie8) { -%>
+<% if (assets[page].css.ie8) { -%>
   <!--[if IE 8]>
   <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie8%>"/>
   <![endif]-->
 <% } -%>
-<% if (assets[page].css && assets[page].css.ie9) { -%>
+<% if (assets[page].css.ie9) { -%>
   <!--[if IE 9]>
   <link rel="stylesheet" href="<%=host%>/<%=assets[page].css.ie9%>"/>
   <![endif]-->
+<% } -%>
 <% } -%>
 <% } else { -%>
   <!-- DEVELOPMENT STATE -->
