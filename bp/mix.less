@@ -63,3 +63,11 @@
        -o-transition: @rules;
           transition: @rules;
 }
+
+.user-select(@val) {
+  -webkit-user-select: @val;
+   -khtml-user-select: @val;
+     -moz-user-select: @val;
+      -ms-user-select: @val;
+          user-select: @val;
+}
