@@ -3,7 +3,9 @@
   "includes": [
     "/less/mix.less"
   ],
-  "less_base": [],
+  "less_base": [
+    "/less/cmn.less"
+  ],
   "less_ie7": [],
   "less_ie8": [],
   "less_ie9": [],

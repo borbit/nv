@@ -7,6 +7,7 @@ var package = require('../package.json')
   , program = require('commander')
   , async = require('async')
   , path = require('path')
+  , http = require('http')
   , ejs = require('ejs')
   , fs = require('fs');
 
@@ -51,6 +52,11 @@ program
   .command('run [options]')
   .description('run the env')
   .action(run);
+
+program
+  .command('install <lib>')
+  .description('install js lib')
+  .action(install);
 
 /**
  * Supported template engines
@@ -260,6 +266,31 @@ function compilePage(name, engine) {
     fs.writeFile(file, html, function(err) {
       if (err) throw err;
     });
+  });
+}
+
+var LIBS = {
+  'jquery': 'http://code.jquery.com/jquery-2.0.3.js'
+, 'jquery.transit': 'http://ricostacruz.com/jquery.transit/jquery.transit.js'
+};
+
+/**
+ * Install js lib
+ */
+function install(lib) {
+  loadConfig();
+
+  if (!LIBS[lib]) {
+    console.error(' error: unknown lib "%s"', lib);
+    process.exit();
+  }
+
+  var jsRootDir = join(c.STATIC_ROOT, '/js');
+  var jsLibsDir = join(jsRootDir, '/libs');
+
+  var file = fs.createWriteStream(join(jsLibsDir, lib + '.js'));
+  var req = http.get(LIBS[lib], function(res) {
+    res.pipe(file);
   });
 }
 
