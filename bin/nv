@@ -179,7 +179,7 @@ function createPage(name, engine, cb) {
       console.error(' \033[90merror\033[39m: ' + err.message);
       process.exit(1);
     }
-    cb && cb();
+    typeof(cb) == 'function' && cb();
   });
 }
 
