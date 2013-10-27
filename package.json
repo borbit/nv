@@ -7,11 +7,11 @@
     "commander": "*",
     "consolidate": "*",
     "connect-gzip": "*",
+    "node-gettext": "*",
     "express": "*",
     "moment": "*",
     "sockjs": "*",
     "async": "*",
-    "i18n": "https://github.com/rebbix/i18n-node/archive/master.tar.gz",
     "ejs": "*"
   },
   "bin": {

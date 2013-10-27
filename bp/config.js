@@ -17,8 +17,7 @@ c.VERSION_FILE    = process.env.VERSION_FILE    || path.join(__dirname, 'dists',
 c.ASSETS_MAP_FILE = process.env.ASSETS_MAP_FILE || false;
 c.IMAGES_MAP_FILE = process.env.IMAGES_MAP_FILE || false;
 
-// locales, off by default
-c.LOCALES         = false;
-c.LOCALE_DEFAULT  = process.env.LOCALE_DEFAULT || 'en';
-c.LOCALES_ROOT    = process.env.LOCALES_ROOT   || path.join(__dirname, 'i18n');
-c.LOCALES_LIST    = ['en']
+// languages, off by default
+c.LANGUAGES         = false;
+c.LANGUAGE_DEFAULT  = process.env.LANGUAGE_DEFAULT || 'en';
+c.LANGUAGES_LIST    = ['en']

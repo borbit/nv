@@ -25,8 +25,8 @@ program
   .option('-P, --port <port>', 'port')
   .option('-H, --host <host>', 'host')
   .option('-p, --production', 'production state')
-  .option('-l, --locale <locale>', 'locale')
-  .option('-o, --output <output>', 'output');
+  .option('-o, --output <output>', 'output')
+  .option('-l, --lang <lang>', 'lang');
 
 program
   .command('init <engine>')
@@ -213,6 +213,13 @@ function createBlock(name, engine) {
       var files = {};
       files[join(blockDir, name + '.less')]      = tplLess({name: name});
       files[join(blockDir, name + '.' + engine)] = tplBlock({name: name});
+
+      if (c.LANGUAGES) {
+        c.LANGUAGES_LIST.forEach(function(language) {
+          files[join(blockDir, name + '.' + language + '.po')] = '';
+        });
+      }
+
       writeFiles(files, cb);
     }
   ], function(err) {
