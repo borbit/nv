@@ -198,17 +198,19 @@ function createBlock(name, engine) {
 
   var tplBlockPath = join(bpDir, 'block.' + engine);
   var tplLessPath  = join(bpDir, 'block.less');
+  var tplLangPath  = join(bpDir, 'block.po');
 
   async.waterfall([
     function(cb) {
       createDirs([blocksDir, blockDir, imgDir], cb);
     },
     function(cb) {
-      readFiles([tplBlockPath, tplLessPath], cb);
+      readFiles([tplBlockPath, tplLessPath, tplLangPath], cb);
     },
     function(content, cb) {
       var tplBlock = ejs.compile(content[tplBlockPath]);
       var tplLess = ejs.compile(content[tplLessPath]);
+      var tplLang = ejs.compile(content[tplLangPath]);
 
       var files = {};
       files[join(blockDir, name + '.less')]      = tplLess({name: name});
@@ -216,7 +218,7 @@ function createBlock(name, engine) {
 
       if (c.LANGUAGES) {
         c.LANGUAGES_LIST.forEach(function(language) {
-          files[join(blockDir, name + '.' + language + '.po')] = '';
+          files[join(blockDir, name + '.' + language + '.po')] = tplLang();
         });
       }
 
