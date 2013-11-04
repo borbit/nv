@@ -51,7 +51,9 @@
   <!-- js for the development env -->
   <script src="/js/libs/sock.js"></script>
   <script src="/js/libs/less.js"></script>
-  <script src="/js/libs/reload.js"></script>
+<% if (config.WATCH) { -%>
+  <script src="/js/libs/watch.js"></script>
+<% } %>
 <% if (check(assets.cmn.js_base)) { -%>
   <!-- js cmn base -->
 <%- js(assets.cmn.js_base) -%>

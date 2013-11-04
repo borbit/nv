@@ -135,7 +135,7 @@ function init(engine) {
       files[bpDir + 'cmn.json']     = join(c.PAGES_ROOT, 'cmn.json');
       files[bpDir + 'mix.less']     = join(lessRootDir, 'mix.less');
       files[bpDir + 'cmn.less']     = join(lessRootDir, 'cmn.less');
-      files[bpDir + 'reload.js']    = join(jsLibsDir, 'reload.js');
+      files[bpDir + 'watch.js']     = join(jsLibsDir, 'watch.js');
       files[bpDir + 'sock.js']      = join(jsLibsDir, 'sock.js');
       files[bpDir + 'less.js']      = join(jsLibsDir, 'less.js');
       copyFiles(files, cb);
