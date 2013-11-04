@@ -5,9 +5,13 @@ var c = module.exports;
 c.PAGES_ROOT      = process.env.PAGES_ROOT      || path.join(__dirname, 'pages');
 c.STATIC_ROOT     = process.env.STATIC_ROOT     || __dirname;
 c.TEMPLATE_ENGINE = process.env.TEMPLATE_ENGINE || '<%=engine%>';
-c.ENV             = process.env.NODE_ENV        || 'development';
+c.ENV             = process.env.NODE_ENV        || 'development'; 
 
-// nv && production
+// less
+c.LESS_RELATIVE_URLS = false;
+c.LESS_ROOTPATH      = '';
+
+// nv & production
 c.ASSETS_HOST     = process.env.ASSETS_HOST     || '';
 
 // nv-pack & production

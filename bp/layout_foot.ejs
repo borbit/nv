@@ -49,6 +49,13 @@
 <% } else { -%>
   <!-- DEVELOPMENT STATE -->
   <!-- js for the development env -->
+  <script>
+    window.less = {
+      env: 'development'
+    , relativeUrls: <%= config.LESS_RELATIVE_URLS %>
+    , rootpath: <%= config.LESS_ROOTPATH %>
+    };
+  </script>
   <script src="/js/libs/sock.js"></script>
   <script src="/js/libs/less.js"></script>
 <% if (config.WATCH) { -%>
