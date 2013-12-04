@@ -7,7 +7,7 @@
     "commander": "*",
     "consolidate": "*",
     "connect-gzip": "*",
-    "node-gettext": "*",
+    "node-gettext": "https://github.com/borbit/node-gettext/archive/master.tar.gz",
     "express": "*",
     "moment": "*",
     "sockjs": "*",
