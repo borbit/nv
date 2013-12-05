@@ -4,7 +4,7 @@
   }
   function js(assets) {
     return assets.reduce(function(m, src) {
-      return m + '  <script src="' + src + '"></script>\n';
+      return m + '  <script src="' + host + src + '"></script>\n';
     }, '')
   }
 -%>
