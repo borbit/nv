@@ -265,9 +265,12 @@ function compilePage(name, engine) {
 
   var data = {
     page: name
-  , prod: !!program.production
   , lang: program.locale
   };
+
+  if (program.production) {
+    data.env = 'production';
+  }
 
   nv.render(data, function(err, html) {
     if (err) throw err;
