@@ -11,7 +11,7 @@
    */
   function css(assets) {
     return assets.reduce(function(m, src) {
-      return m + '  <link rel="stylesheet" href="' + host + src + '"/>\n';
+      return m + '  <link rel="stylesheet" href="' + src + '"/>\n';
     }, '')
   }
 
@@ -21,7 +21,7 @@
    */
   function less(assets) {
     return assets.reduce(function(m, src) {
-      return m + '    @import "' + host + src + '";\n';
+      return m + '    @import "' + src + '";\n';
     }, '')
   }
 
