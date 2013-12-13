@@ -1,6 +1,6 @@
 {
   "name": "nv",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Front-end development environment",
   "author": "Serge Borbit <serge.borbit@gmail.com>",
   "dependencies": {
