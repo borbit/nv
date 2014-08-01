@@ -1,19 +1,20 @@
 {
   "name": "nv",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Front-end development environment",
   "author": "Serge Borbit <serge.borbit@gmail.com>",
   "dependencies": {
-    "commander": "*",
-    "consolidate": "*",
-    "connect-gzip": "*",
+    "commander": "^2.3.0",
+    "consolidate": "^0.10.0",
+    "connect-gzip": "^0.1.6",
     "node-gettext": "https://github.com/borbit/node-gettext/archive/master.tar.gz",
-    "sprintf": "*",
-    "express": "*",
-    "moment": "*",
-    "sockjs": "*",
-    "async": "*",
-    "ejs": "*"
+    "sprintf": "^0.1.3",
+    "express": "^4.7.2",
+    "moment": "^2.8.0",
+    "sockjs": "^0.3.9",
+    "async": "^0.9.0",
+    "ejs": "^1.0.0",
+    "morgan": "^1.2.2"
   },
   "bin": {
     "nv": "./bin/nv"
